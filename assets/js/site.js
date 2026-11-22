@@ -217,6 +217,7 @@ function renderFooter() {
           <li><a href="corporate-training.html">Corporate Training</a></li>
           <li><a href="konsultasi.html">Consulting & Advisory</a></li>
           <li><a href="public-training.html">Public Training</a></li>
+          <li><a href="cek-pesanan.html">Cek Pesanan</a></li>
         </ul>
       </div>
       <div>

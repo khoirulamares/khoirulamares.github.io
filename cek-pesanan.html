@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MBV Training &amp; Consulting</title>
+  <meta name="description" content="Cek status pesanan Public Training MBV dan buka kembali link grup WhatsApp kelas.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=2026112202">
+  <script src="assets/js/i18n.js?v=2026112202"></script>
+  <script src="assets/js/i18n-en.js?v=2026112202"></script>
+</head>
+<body data-page="public" data-shop="orders">
+<div id="site-header"></div>
+
+<main>
+  <section class="page-header">
+    <div class="container">
+      <ol class="crumbs"><li><a href="index.html">Home</a></li><li><i data-icon="chevronRight"></i></li><li><a href="public-training.html">Public Training</a></li><li><i data-icon="chevronRight"></i></li><li>Cek Pesanan</li></ol>
+      <span class="eyebrow">Public Training</span>
+      <h1>Cek Pesanan</h1>
+      <p class="lead">Lihat status pesanan dan buka kembali link grup WhatsApp kelas dengan nomor pesanan dan email pendaftaran.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container lookup-layout">
+      <div>
+        <div class="co-card">
+          <div class="co-head"><span class="num"><i data-icon="search"></i></span><div><h2>Cari pesanan</h2><p>Nomor pesanan tertera di halaman sukses, halaman pembayaran, dan email konfirmasi.</p></div></div>
+          <form id="lookupForm" novalidate>
+            <div class="form-grid">
+              <div class="field"><label for="lkOrder">Nomor pesanan <span class="req">*</span></label><input class="input" id="lkOrder" placeholder="Contoh: MBV2611ABCDE" autocomplete="off" style="text-transform:uppercase"><span class="err">Nomor pesanan belum valid.</span></div>
+              <div class="field"><label for="lkEmail">Email pendaftaran <span class="req">*</span></label><input class="input" id="lkEmail" type="email" placeholder="nama@email.com" autocomplete="email"><span class="err">Email belum valid.</span></div>
+            </div>
+            <button class="btn btn-primary btn-lg mt-24" type="submit"><i data-icon="search"></i> Cek Pesanan</button>
+          </form>
+          <div id="lookupResult" class="mt-24" aria-live="polite"></div>
+        </div>
+
+        <div class="section-head-row mt-48" style="margin-bottom:16px">
+          <div class="section-head"><h2 class="mb-0" style="font-size:1.375rem">Pesanan di perangkat ini</h2></div>
+          <span class="result-count" id="deviceCount"></span>
+        </div>
+        <div class="order-list" id="deviceOrders"></div>
+      </div>
+
+      <aside class="lookup-aside">
+        <div class="co-card">
+          <h3 style="font-size:1.0625rem">Belum menerima link grup?</h3>
+          <ul class="dot-list small mt-16">
+            <li>Link grup WhatsApp kelas tersedia setelah pembayaran terverifikasi.</li>
+            <li>Simpan nomor pesanan Anda untuk membuka kembali link grup kapan saja.</li>
+            <li>Jika mendaftar dari perangkat lain atau nomor pesanan hilang, hubungi tim MBV dengan menyebutkan nama dan email pendaftaran.</li>
+          </ul>
+          <a class="btn btn-outline btn-block mt-24" href="https://wa.me/6285210000389?text=Halo%20MBV%2C%20saya%20butuh%20bantuan%20mengecek%20pesanan%20Public%20Training." target="_blank" rel="noopener"><i data-icon="whatsapp"></i> Hubungi tim MBV</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/site.js?v=2026112202"></script>
+<script src="assets/js/data.js?v=2026112202"></script>
+<script src="assets/js/shop.js?v=2026112202"></script>
+</body>
+</html>

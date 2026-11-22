@@ -61,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
     root.innerHTML = `<section class="section"><div class="container container-narrow"><div class="empty">${icon("search")}<h3>Program tidak ditemukan</h3><p class="muted">Silakan pilih program dari halaman Corporate Training.</p><a class="btn btn-blue" href="corporate-training.html#our-program">Lihat Program</a></div></div></section>`;
     return;
   }
-  document.title = `${p.title} | MBV Training & Consulting`;
 
   const others = [...PROGRAMS.filter((x) => x.id !== p.id).map((x) => ({ href: `program.html?id=${x.id}`, icon: x.icon, title: x.title, card: x.card })),
     { href: "konsultasi.html", icon: "compass", title: "Consulting & Advisory", card: "Membekali profesional dengan keterampilan dan pengetahuan yang dibutuhkan dalam peran sebagai konsultan bisnis strategis." }];

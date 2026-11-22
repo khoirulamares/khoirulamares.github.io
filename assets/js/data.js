@@ -101,6 +101,16 @@ function dateRange(d, M) {
   return sameMonth ? `${f.getUTCDate()}${join}${one(l, true)}` : `${one(f, f.getUTCFullYear() !== l.getUTCFullYear())}${join}${one(l, true)}`;
 }
 
+/* Link grup WhatsApp tiap kelas (diisi tim MBV), contoh:
+   AIP: "https://chat.whatsapp.com/AbCdEf123456"
+   Selama masih kosong, tombol "Gabung grup WhatsApp" mengarah ke WhatsApp admin
+   dengan pesan berisi nomor pesanan peserta. */
+const WA_GROUPS = {
+  AIP: "", APA: "", CLB: "", WAA: "", AAO: "", SDO: "", RAG: "", N8N: "",
+  DAL: "", ADB: "", SQP: "", DEC: "", PBI: "", KPF: "", CHA: "", ABT: "",
+  SEN: "", DED: "", DSC: "", DMA: "", AMA: "", AHR: "", WVC: "",
+};
+
 function makeCourse(o) {
   const d = o.dates.map((s) => new Date(s + "T12:00:00Z"));
   const cat = CATEGORIES.find((c) => c.id === o.category);
@@ -122,6 +132,7 @@ function makeCourse(o) {
     endISO: `${o.dates[0]}T${t2.replace(".", ":")}:00+07:00`,
     schedule: o.sessions.map((s, i) => ({ ...s, day: _D[d[i].getUTCDay()], dd: d[i].getUTCDate(), mm: _MS[d[i].getUTCMonth()] })),
     benefits: BENEFITS,
+    waGroup: o.waGroup || WA_GROUPS[o.code] || "",
   };
 }
 

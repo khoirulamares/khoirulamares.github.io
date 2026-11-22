@@ -1121,3 +1121,23 @@ a.prog-card:focus-visible { outline: 3px solid var(--orange); outline-offset: 3p
 .pg-others b { font-size: var(--fs-sm); line-height: 1.4; }
 .pg-others .go { margin-top: auto; color: var(--orange-600); }
 .pg-others .go .i { width: 18px; height: 18px; }
+
+/* ---------- Cek Pesanan & nomor pesanan ---------- */
+.order-no { display: grid; grid-template-columns: 1fr auto; gap: 10px 16px; align-items: center; max-width: 560px; margin: 28px auto 0; padding: 18px 20px; border-radius: var(--radius-lg); background: #fff; border: 1.5px dashed var(--line-strong); text-align: left; }
+.order-no small { display: block; font-size: 12px; color: var(--muted); }
+.order-no b { font-size: 1.375rem; letter-spacing: .06em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.order-no p { grid-column: 1 / -1; margin: 0; font-size: var(--fs-sm); color: var(--text); line-height: 1.6; }
+.lookup-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: start; }
+@media (min-width: 1100px) { .lookup-layout { grid-template-columns: minmax(0, 1fr) 360px; gap: 40px; } .lookup-aside { position: sticky; top: calc(var(--header-h) + 20px); } }
+.order-list { display: grid; gap: 16px; }
+.order-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
+.order-card .oc-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 20px; background: var(--bg-soft); border-bottom: 1px solid var(--line); }
+.order-card .oc-head small { display: block; font-size: 12px; color: var(--muted); }
+.order-card .oc-head b { color: var(--ink); letter-spacing: .04em; }
+.order-card .oc-body { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 16px; padding: 18px 20px; align-items: start; }
+.order-card .oc-body .thumb { width: 88px; aspect-ratio: 1; border-radius: 12px; padding: 0; align-items: center; justify-content: center; }
+.order-card .oc-body .thumb .glyph { position: static; opacity: .9; }
+.order-card .oc-body .thumb .glyph .i { width: 34px; height: 34px; }
+.order-card h3 { font-size: 1.0625rem; line-height: 1.4; margin-bottom: 8px; }
+.order-card .meta { margin-bottom: 6px; }
+.order-card .oc-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 20px 18px; }

@@ -165,7 +165,6 @@ function pageDetail() {
     root.innerHTML = `<section class="section"><div class="container container-narrow"><div class="empty">${icon("search")}<h3>Kelas tidak ditemukan</h3><p class="muted">Tautan kelas tidak valid atau kelas sudah berakhir.</p><a class="btn btn-blue" href="public-training.html">Lihat jadwal kelas</a></div></div></section>`;
     return;
   }
-  document.title = `${c.title} | Public Training MBV`;
   const left = seatsLeft(c);
   const faqs = [...c.faq, ...COMMON_FAQ];
   const related = upcoming().filter((x) => x.id !== c.id).sort((a, b) => (b.cat === c.cat) - (a.cat === c.cat)).slice(0, 3);
@@ -289,7 +288,6 @@ function pageCheckout() {
     root.innerHTML = `<div class="empty">${icon("search")}<h3>Pilih kelas terlebih dahulu</h3><p class="muted">Silakan pilih jadwal Public Training yang ingin Anda ikuti.</p><a class="btn btn-blue" href="public-training.html">Lihat jadwal kelas</a></div>`;
     return;
   }
-  document.title = `Pendaftaran ${c.code} | Public Training MBV`;
 
   const state = {
     mode: existing ? existing.mode : params.get("mode") === "group" ? "group" : "self",
@@ -624,6 +622,7 @@ function pagePayment() {
     </div>
     <aside>${orderSummaryCard(o, c)}
       <p class="small muted center mt-16">Kendala pembayaran? <a target="_blank" rel="noopener" href="${waLink(`Halo MBV, saya butuh bantuan pembayaran pesanan ${o.id}.`)}">Hubungi kami</a></p>
+      <p class="small muted center">Simpan nomor pesanan <b class="strong">${o.id}</b> untuk membuka halaman ini lagi lewat <a href="cek-pesanan.html?order=${o.id}">Cek Pesanan</a>.</p>
     </aside>
   </div>`;
 
@@ -643,6 +642,111 @@ function pagePayment() {
   const markPaid = () => { o.status = "paid"; o.paidAt = Date.now(); Orders.save(o); location.href = withLang(`sukses.html?order=${o.id}`); };
   $("#simulate").addEventListener("click", markPaid);
   $("#checkBtn").addEventListener("click", () => toast("Pembayaran belum terdeteksi. Coba lagi dalam beberapa menit."));
+}
+
+/* ==========================================================================
+   PENDUKUNG RIWAYAT PESANAN
+   ========================================================================== */
+/* Link grup WhatsApp kelas. Jika link grup belum diisi di data.js (WA_GROUPS),
+   arahkan ke WhatsApp admin dengan pesan berisi nomor pesanan. */
+function groupLink(o, c) {
+  return c.waGroup || waLink(`Halo MBV, saya sudah membayar pesanan ${o.id} untuk kelas ${c.code} (${c.title}). Mohon kirimkan link grup WhatsApp kelas.`);
+}
+function orderStatus(o) {
+  if (o.status === "paid") return { key: "paid", label: "Lunas" };
+  if (o.status === "review") return { key: "review", label: "Menunggu review" };
+  if (Date.now() > o.expiresAt) return { key: "expired", label: "Kedaluwarsa" };
+  return { key: "pending", label: "Menunggu pembayaran" };
+}
+function orderNoBox(o) {
+  return `
+  <div class="order-no no-print">
+    <div><small>Nomor pesanan Anda</small><b>${o.id}</b></div>
+    <button type="button" class="copy-btn" data-copy="${o.id}">${icon("copy")} Salin</button>
+    <p>Simpan nomor pesanan ini. Link grup WhatsApp kelas dapat dibuka kembali kapan saja melalui halaman <a href="cek-pesanan.html?order=${o.id}">Cek Pesanan</a>.</p>
+  </div>`;
+}
+function bindCopy(root) {
+  $$("[data-copy]", root).forEach((btn) => btn.addEventListener("click", () => {
+    navigator.clipboard?.writeText(btn.dataset.copy).then(() => toast("Berhasil disalin"), () => toast("Salin manual: " + btn.dataset.copy));
+  }));
+}
+
+/* Cari pesanan. Versi statis membaca pesanan yang tersimpan di browser ini.
+   Saat backend tersedia, ganti isi fungsi ini dengan pemanggilan API, mis.
+   return fetch(`/api/orders/${id}?email=${email}`).then((r) => r.ok ? r.json() : null); */
+async function lookupOrder(id, email) {
+  const o = Orders.get(String(id || "").trim().toUpperCase());
+  if (!o) return null;
+  const em = String(email || "").trim().toLowerCase();
+  const emails = [o.buyer.email, o.billing.financeEmail, ...o.participants.map((p) => p.email)].filter(Boolean).map((x) => x.toLowerCase());
+  return emails.includes(em) ? o : null;
+}
+
+function orderCard(o, { full = false } = {}) {
+  const c = getCourse(o.courseId);
+  if (!c) return "";
+  const st = orderStatus(o);
+  const created = new Date(o.createdAt);
+  const action = st.key === "paid"
+    ? `<a class="btn btn-primary btn-sm" href="${groupLink(o, c)}" target="_blank" rel="noopener">${icon("whatsapp")} Gabung grup WhatsApp</a>
+       <a class="btn btn-outline btn-sm" href="sukses.html?order=${o.id}">${icon("receipt")} Lihat kuitansi</a>
+       <a class="btn btn-outline btn-sm" href="${gcalLink(c)}" target="_blank" rel="noopener">${icon("calendar")} Tambah ke Kalender</a>`
+    : st.key === "pending"
+      ? `<a class="btn btn-primary btn-sm" href="pembayaran.html?order=${o.id}">${icon("lock")} Lanjutkan pembayaran</a>`
+      : st.key === "review"
+        ? `<a class="btn btn-outline btn-sm" href="pembayaran.html?order=${o.id}">${icon("info")} Lihat status pengajuan</a>
+           <a class="btn btn-outline btn-sm" href="${waLink(`Halo MBV, saya ingin menanyakan status pengajuan tempo ${o.id}.`)}" target="_blank" rel="noopener">${icon("whatsapp")} Tanya tim MBV</a>`
+        : `<a class="btn btn-outline btn-sm" href="checkout.html?kelas=${c.id}">Daftar ulang</a>`;
+  return `
+  <article class="order-card">
+    <div class="oc-head">
+      <div><small>No. pesanan</small><b>${o.id}</b></div>
+      <span class="status-pill ${st.key}">${st.label}</span>
+    </div>
+    <div class="oc-body">
+      ${thumbHTML(c, { top: false })}
+      <div>
+        <h3>${esc(c.title)}</h3>
+        <ul class="meta">
+          <li>${icon("calendar")} ${c.dateLong}</li>
+          <li>${icon("clock")} ${c.timeLabel} WIB · Live Zoom</li>
+          <li>${icon("users")} ${o.pricing.qty} orang · ${rupiah(o.pricing.total)}</li>
+        </ul>
+        ${full ? `<p class="xs muted">Dipesan ${created.getDate()} ${_MS[created.getMonth()]} ${created.getFullYear()} atas nama ${esc(o.buyer.name)}</p>` : ""}
+      </div>
+    </div>
+    <div class="oc-actions">${action}</div>
+  </article>`;
+}
+
+/* ==========================================================================
+   CEK PESANAN · cek-pesanan.html?order=
+   ========================================================================== */
+function pageOrders() {
+  const form = $("#lookupForm");
+  const result = $("#lookupResult");
+  const idIn = $("#lkOrder"), emIn = $("#lkEmail");
+  if (params.get("order")) idIn.value = params.get("order");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const okId = idIn.value.trim().length >= 6, okEm = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emIn.value.trim());
+    idIn.closest(".field").classList.toggle("has-error", !okId);
+    emIn.closest(".field").classList.toggle("has-error", !okEm);
+    if (!okId || !okEm) return;
+    const o = await lookupOrder(idIn.value, emIn.value);
+    result.innerHTML = o ? orderCard(o, { full: true }) : `
+      <div class="notice warn">${icon("info")}<span><b>Pesanan tidak ditemukan.</b> Pastikan nomor pesanan dan email sama dengan saat pendaftaran. Jika Anda mendaftar dari perangkat lain atau masih kesulitan, <a href="${waLink(`Halo MBV, saya ingin mengecek pesanan ${idIn.value.trim().toUpperCase()} atas email ${emIn.value.trim()}.`)}" target="_blank" rel="noopener">hubungi tim MBV</a>.</span></div>`;
+    result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+
+  // Pesanan yang pernah dibuat di perangkat ini
+  const list = Object.values(Orders.all()).filter((o) => getCourse(o.courseId)).sort((a, b) => b.createdAt - a.createdAt);
+  $("#deviceOrders").innerHTML = list.length
+    ? list.map((o) => orderCard(o)).join("")
+    : `<div class="empty" style="padding:40px 24px">${icon("receipt")}<h4>Belum ada pesanan di perangkat ini</h4><p class="muted">Pesanan yang Anda buat dari browser ini akan tampil di sini.</p><a class="btn btn-blue" href="public-training.html">Lihat jadwal kelas</a></div>`;
+  $("#deviceCount").textContent = list.length ? `${list.length} pesanan` : "";
 }
 
 /* ==========================================================================
@@ -667,6 +771,7 @@ function pageSuccess() {
     <div class="success-icon">${icon("check")}</div>
     <h1 style="font-size:clamp(1.75rem,1.3rem + 1.6vw,2.375rem)">Pembayaran berhasil, pendaftaran terkonfirmasi</h1>
     <p class="lead muted">Terima kasih, ${esc(o.buyer.name.split(" ")[0])}. Konfirmasi dan kuitansi telah dikirim ke <b class="strong">${esc(o.buyer.email)}</b> dan WhatsApp <b class="strong">+${esc(o.buyer.wa)}</b>.</p>
+    ${orderNoBox(o)}
   </div>
   <div class="pay-layout">
     <div>
@@ -679,7 +784,7 @@ function pageSuccess() {
           <li><b>Terima E-Certificate</b><p>${esc(COMMON_NOTES[2])}</p></li>
         </ol>
         <div class="btn-row mt-32 no-print">
-          <a class="btn btn-primary" href="https://chat.whatsapp.com/" target="_blank" rel="noopener">${icon("whatsapp")} Gabung grup WhatsApp</a>
+          <a class="btn btn-primary" href="${groupLink(o, c)}" target="_blank" rel="noopener">${icon("whatsapp")} Gabung grup WhatsApp</a>
           <a class="btn btn-outline" href="${gcalLink(c)}" target="_blank" rel="noopener">${icon("calendar")} Tambah ke Kalender</a>
           <button class="btn btn-outline" onclick="window.print()">${icon("printer")} Cetak kuitansi</button>
         </div>
@@ -709,6 +814,7 @@ function pageSuccess() {
       </div>
     </aside>
   </div>`;
+  bindCopy(root);
 }
 
 /* ---------- Router ---------- */
@@ -720,6 +826,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "checkout") pageCheckout();
   if (page === "payment") pagePayment();
   if (page === "success") pageSuccess();
+  if (page === "orders") pageOrders();
   initAccordions();
   initImgFallback();
 });
