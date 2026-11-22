@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Article | MBV Training & Consulting</title>
+  <meta name="description" content="Tips, wawasan, dan berita seputar pelatihan dan pengembangan SDM.">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/i18n-en.js"></script>
+</head>
+<body data-page="article">
+<div id="site-header"></div>
+
+<main>
+  <section class="page-header">
+    <div class="container">
+      <ol class="crumbs"><li><a href="index.html">Home</a></li><li><i data-icon="chevronRight"></i></li><li>Article</li></ol>
+      <span class="eyebrow">Our Blog</span>
+      <h1>Artikel & Wawasan</h1>
+      <p class="lead">Tips, wawasan, dan berita seputar pelatihan dan pengembangan SDM.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="art-toolbar">
+        <div class="filters" id="artFilters" aria-label="Kategori artikel"></div>
+        <span class="result-count" id="artCount"></span>
+      </div>
+      <div id="artList"></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="cta-band">
+        <div><span class="accent"></span><h2>Siap Meningkatkan Kompetensi Tim Anda?</h2><p>Konsultasikan kebutuhan pelatihan perusahaan Anda bersama tim MBV Training & Consulting sekarang juga.</p></div>
+        <div class="btn-row"><a class="btn btn-primary btn-lg" href="kontak.html#form">Hubungi Kami</a><a class="btn btn-ghost-light btn-lg" href="corporate-training.html">Lihat Program</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/site.js"></script>
+<script>
+  /* Daftar artikel (judul & ringkasan dari web MBV). Tambah artikel baru di sini;
+     artikel paling atas tampil sebagai artikel utama. */
+  const ARTICLES = [
+    { cat: "Training", date: "12 Agu 2026", img: "assets/img/photos/group-discussion.jpg", title: "5 Strategi Meningkatkan Produktivitas Tim Melalui Pelatihan", desc: "Bagaimana program pelatihan yang tepat dapat mendorong performa karyawan secara signifikan." },
+    { cat: "Sertifikasi", date: "03 Agu 2026", img: "assets/img/photos/trainer-kelas.jpg", title: "Pentingnya Sertifikasi BNSP bagi Karier Profesional Anda", desc: "Kenali manfaat sertifikasi kompetensi resmi dan cara mendapatkannya." },
+    { cat: "Prakerja", date: "20 Jul 2026", img: "assets/img/photos/digital-learning.jpg", title: "Panduan Lengkap Mengikuti Pelatihan Kartu Prakerja", desc: "Langkah demi langkah memilih dan mengikuti pelatihan Prakerja yang sesuai kebutuhan Anda." },
+  ];
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const cats = ["Semua", ...new Set(ARTICLES.map((a) => a.cat))];
+    const filters = document.getElementById("artFilters");
+    const list = document.getElementById("artList");
+    const meta = (a) => `<div class="meta-line"><span>${a.cat}</span><span class="dot"></span><span>${a.date}</span></div>`;
+    filters.innerHTML = cats.map((c, i) => `<button class="chip ${i === 0 ? "is-active" : ""}" data-cat="${c}">${c} <span class="count">${c === "Semua" ? ARTICLES.length : ARTICLES.filter((a) => a.cat === c).length}</span></button>`).join("");
+
+    function render(cat) {
+      const rows = cat === "Semua" ? ARTICLES : ARTICLES.filter((a) => a.cat === cat);
+      document.getElementById("artCount").textContent = `${rows.length} artikel`;
+      if (cat === "Semua" && rows.length > 1) {
+        const [main, ...rest] = rows;
+        list.innerHTML = `
+          <div class="art-magazine">
+            <article class="art-main">
+              <div class="media"><img src="${main.img}" alt="" loading="lazy"><span class="badge badge-orange">Artikel Terbaru</span></div>
+              <div class="body">${meta(main)}<h2>${main.title}</h2><p>${main.desc}</p></div>
+            </article>
+            <div class="art-side">
+              ${rest.map((a) => `
+              <article class="art-row">
+                <div class="media"><img src="${a.img}" alt="" loading="lazy"></div>
+                <div class="body">${meta(a)}<h3>${a.title}</h3><p>${a.desc}</p></div>
+              </article>`).join("")}
+            </div>
+          </div>`;
+      } else {
+        list.innerHTML = `<div class="grid grid-3">${rows.map((a) => `
+          <article class="article-card">
+            <div class="media"><img src="${a.img}" alt="" loading="lazy"></div>
+            <div class="body">${meta(a)}<h3>${a.title}</h3><p>${a.desc}</p></div>
+          </article>`).join("")}</div>`;
+      }
+    }
+    filters.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-cat]"); if (!b) return;
+      filters.querySelectorAll(".chip").forEach((x) => x.classList.toggle("is-active", x === b));
+      render(b.dataset.cat);
+    });
+    render("Semua");
+  });
+</script>
+</body>
+</html>

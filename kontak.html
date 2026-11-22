@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kontak | MBV Training & Consulting</title>
+  <meta name="description" content="Hubungi MBV Training & Consulting untuk Corporate Training, Consulting & Advisory, dan Public Training. Cikarang Technopark, Lippo Cikarang, Bekasi.">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/i18n-en.js"></script>
+</head>
+<body data-page="about">
+<div id="site-header"></div>
+
+<main>
+  <section class="page-header">
+    <div class="container">
+      <ol class="crumbs"><li><a href="index.html">Home</a></li><li><i data-icon="chevronRight"></i></li><li>Company</li><li><i data-icon="chevronRight"></i></li><li>Contact</li></ol>
+      <span class="eyebrow">Contact Information</span>
+      <h1>PT Meta Bright Vision</h1>
+      <p class="lead">Hubungi kami untuk kebutuhan pelatihan dan konsultasi perusahaan Anda.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split split-4060" style="align-items:start">
+      <div>
+        <div class="grid" style="gap:14px">
+          <div class="contact-card"><span class="ic"><i data-icon="phone"></i></span><div><h5>Hotline</h5><a href="tel:+622189902406">(021) 899 024 06</a></div></div>
+          <div class="contact-card"><span class="ic"><i data-icon="whatsapp"></i></span><div><h5>WhatsApp</h5><p><a href="https://wa.me/6285210000389" target="_blank" rel="noopener">+62 852 1000 0389</a><br><a href="https://wa.me/6282110384458" target="_blank" rel="noopener">+62 821 1038 4458</a></p></div></div>
+          <div class="contact-card"><span class="ic"><i data-icon="mail"></i></span><div><h5>Official Email</h5><a href="mailto:admin@mbv.co.id">admin@mbv.co.id</a></div></div>
+          <div class="contact-card"><span class="ic"><i data-icon="mapPin"></i></span><div><h5>Our Location</h5><p>Cikarang Technopark Building<br>Jl. Inti I Blok C1 No. 7, Lippo Cikarang<br>Bekasi 17550, Jawa Barat</p></div></div>
+        </div>
+      </div>
+
+      <div class="co-card" id="form" style="scroll-margin-top:110px">
+        <h2 style="font-size:1.5rem">Send us a Message</h2>
+        <p class="muted small mb-24">Pesan akan diteruskan ke tim MBV melalui WhatsApp atau email.</p>
+        <form id="contactForm" novalidate>
+          <div class="form-grid">
+            <div class="field"><label for="fName">Nama lengkap <span class="req">*</span></label><input class="input" id="fName" autocomplete="name" required><span class="err">Nama wajib diisi.</span></div>
+            <div class="field"><label for="fOrg">Perusahaan / instansi</label><input class="input" id="fOrg" autocomplete="organization"></div>
+            <div class="field"><label for="fEmail">Email <span class="req">*</span></label><input class="input" id="fEmail" type="email" autocomplete="email" required><span class="err">Email belum valid.</span></div>
+            <div class="field"><label for="fPhone">No. telepon / WhatsApp</label><input class="input" id="fPhone" inputmode="tel" autocomplete="tel"></div>
+            <div class="field full"><label for="fService">Kebutuhan <span class="req">*</span></label>
+              <select class="input" id="fService" required>
+                <option value="">Pilih layanan</option>
+                <option value="inhouse">Corporate Training</option>
+                <option value="consulting">Consulting & Advisory</option>
+                <option value="public">Public Training (pendaftaran/pertanyaan kelas)</option>
+                <option value="other">Lainnya</option>
+              </select><span class="err">Pilih salah satu layanan.</span></div>
+            <div class="field full"><label for="fMsg">Tell Us About Project <span class="req">*</span></label><textarea class="input" id="fMsg" placeholder="Ceritakan kebutuhan Anda: topik, jumlah peserta, perkiraan waktu, dan lokasi." required></textarea><span class="err">Pesan wajib diisi.</span></div>
+          </div>
+          <div class="btn-row mt-24">
+            <button class="btn btn-primary btn-lg" type="submit" data-via="wa"><i data-icon="whatsapp"></i> Kirim via WhatsApp</button>
+            <button class="btn btn-outline btn-lg" type="submit" data-via="email"><i data-icon="mail"></i> Kirim via Email</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-soft" style="padding-top:0;padding-bottom:0">
+    <iframe class="map-frame" style="border-radius:0;min-height:420px;display:block" title="Peta lokasi MBV Training & Consulting" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Cikarang%20Technopark%20Building%20Lippo%20Cikarang&z=15&output=embed"></iframe>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/site.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const p = new URLSearchParams(location.search);
+    const svc = p.get("layanan"), kelas = p.get("kelas");
+    if (svc) document.getElementById("fService").value = svc;
+    if (kelas) document.getElementById("fMsg").value = `Kami tertarik mengadakan program ${kelas} sebagai Corporate Training untuk tim kami.\n\nPerkiraan jumlah peserta: \nPerkiraan waktu: \nLokasi: `;
+
+    const form = document.getElementById("contactForm");
+    let via = "wa";
+    form.querySelectorAll("[data-via]").forEach((b) => b.addEventListener("click", () => { via = b.dataset.via; }));
+    form.querySelectorAll(".input").forEach((i) => i.addEventListener("input", () => i.closest(".field").classList.remove("has-error")));
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const v = (id) => document.getElementById(id).value.trim();
+      const checks = [["fName", v("fName").length < 2], ["fEmail", !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v("fEmail"))], ["fService", !v("fService")], ["fMsg", v("fMsg").length < 5]];
+      let first = null;
+      checks.forEach(([id, bad]) => { document.getElementById(id).closest(".field").classList.toggle("has-error", bad); if (bad && !first) first = id; });
+      if (first) { document.getElementById(first).focus(); return; }
+      const sel = document.getElementById("fService");
+      const label = sel.options[sel.selectedIndex].text;
+      const text = `Halo MBV, saya ${v("fName")}${v("fOrg") ? ` dari ${v("fOrg")}` : ""}.\n\nKebutuhan: ${label}\n\n${v("fMsg")}\n\nEmail: ${v("fEmail")}${v("fPhone") ? `\nTelp: ${v("fPhone")}` : ""}`;
+      if (via === "wa") window.open(waLink(text), "_blank", "noopener");
+      else location.href = `mailto:${SITE.email}?subject=${encodeURIComponent(`[Website] ${label}, ${v("fOrg") || v("fName")}`)}&body=${encodeURIComponent(text)}`;
+      toast("Pesan Anda sudah disiapkan. Terima kasih!");
+    });
+  });
+</script>
+</body>
+</html>
