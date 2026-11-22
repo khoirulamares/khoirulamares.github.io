@@ -634,6 +634,19 @@ window.I18N_EN = {
   "20+ Years Experienced in Finance & Head of Learning Center": "20+ Years of Experience in Finance & Head of Learning Center",
   "Senior Trainer with 20+ Years of Experienced & Branch Manager of Banks": "Senior Trainer with 20+ Years of Experience & Former Bank Branch Manager",
   "Senior Trainer with 20+ Years of Experienced Risk Management": "Senior Trainer with 20+ Years of Experience in Risk Management",
+  "Lihat Detail": "View Details",
+  "Program Pelatihan": "Training Programs",
+  "Program Lainnya": "Other Programs",
+  "Training Perbankan": "Banking Training",
+  "Program tidak ditemukan": "Program not found",
+  "Silakan pilih program dari halaman Corporate Training.": "Please choose a program from the Corporate Training page.",
+  "Bila anda memiliki pertanyaan atau ingin menjalin kerjasama dalam pelatihan ini, silakan hubungi kami.": "If you have any questions or would like to partner with us on this training, please contact us.",
+  "Daftar program": "Program list",
+  "Tertarik dengan program ini?": "Interested in this program?",
+  "Sebelumnya": "Previous",
+  "Berikutnya": "Next",
+  "Pilih program": "Choose a program",
+  "Lihat semua program": "View all programs",
   "Ke halaman pembayaran": "Go to payment page",
 };
 
@@ -642,6 +655,8 @@ const _num = (s) => s.replace(/\./g, ",");                       // 1.284 -> 1,2
 const _dec = (s) => s.replace(",", ".");                          // 4,9 -> 4.9
 const _MON = { Jan: "Jan", Feb: "Feb", Mar: "Mar", Apr: "Apr", Mei: "May", Jun: "Jun", Jul: "Jul", Agu: "Aug", Sep: "Sep", Okt: "Oct", Nov: "Nov", Des: "Dec" };
 window.I18N_PATTERNS = [
+  [/^Durasi Program: (\d+) Hari$/, (m, n) => `Program Duration: ${n} ${n === "1" ? "Day" : "Days"}`],
+  [/^(\d+) program pelatihan perbankan\. Pilih program untuk melihat latar belakang, tujuan, durasi, dan cakupan materi\.$/, "$1 banking training programs. Choose a program to see its background, objectives, duration, and coverage."],
   [/^(\d+) kursi tersedia$/, "$1 seats available"],
   [/^Sisa (\d+) kursi$/, "Only $1 seats left"],
   [/^(\d+) dari (\d+) kursi tersedia$/, "$1 of $2 seats available"],
